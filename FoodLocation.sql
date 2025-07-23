@@ -9,8 +9,9 @@ Quantity int NOT NULL,
 Entry_Date Date NOT NULL,
 Expiration_Date Date, -- This can be null. Spices for example do not expire.
 CHECK (Quantity > 0 ),
-PRIMARY KEY (Location_ID),
-FOREIGN KEY (FName) REFERENCES Food (Fname)
+PRIMARY KEY (Location_ID)
+-- FOREIGN KEY (FName) REFERENCES Food (Fname)
+-- Removed until food table is built
 );
 
 /*
