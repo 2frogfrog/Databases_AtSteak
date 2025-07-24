@@ -3,7 +3,8 @@ CREATE TABLE Food (
     category VARCHAR(50),
     FName VARCHAR(100),
     expr_date INT, --this is the number of days before expiratiobn
-    price DECIMAL(6,2)
+    price DECIMAL(6,2),
+    PRIMARY KEY (FName) 
 );
 
 /* Sample data curtousy of chatgpt */
