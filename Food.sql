@@ -8,7 +8,7 @@ CREATE TABLE Food (
 );
 
 /* Sample data curtousy of chatgpt */
-INSERT INTO Food (type, name, expr_date, price) VALUES 
+INSERT INTO Food (category, FName, expr_date, price) VALUES 
 ('Fruit', 'Apple', 30, 0.99),
 ('Fruit', 'Banana', 7, 0.59),
 ('Vegetable', 'Carrot', 21, 0.49),
