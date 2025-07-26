@@ -42,7 +42,7 @@ ON UPDATE CASCADE
 /*
  * Create a table that stores the recipies.
  */
-CREATE TABLE IF NOT EXISTS Recipies (
+CREATE TABLE IF NOT EXISTS Recipes (
 R_ID INT NOT NULL AUTO_INCREMENT,
 RName VARCHAR(50) UNIQUE NOT NULL CHECK (length(RName) > 0),
 Servings INT NOT NULL CHECK (Servings > 0),
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS RecipeIngredients (
 /*
 Inserting sample data into each table.
 */
-/* Sample data curtousy of chatgpt*/
+
 -- Food table sample data.
 INSERT INTO Food (category, FName, expr_date, price) VALUES
 ('Fruit',      'Apple',       '2025-08-10', 0.99),
@@ -148,7 +148,7 @@ ON DUPLICATE KEY UPDATE
  * Sample data for the table.
  * Assume Calories is calories per serving. 
  */
-INSERT INTO Recipies (RName, Servings, Calories) VALUES
+INSERT INTO Recipes (RName, Servings, Calories) VALUES
 ('Spaghetti Bolognese', 4, 500),
 ('Chicken Caesar Salad', 2, 400),
 ('Beef Tacos', 3, 300),
@@ -206,3 +206,25 @@ VALUES
 ('Freezer A', 'Fish', 30, '2025-07-23'),
 ('Fridge A', 'Cheese', 25, '2025-07-21'),
 ('Pantry B', 'Lentils', 45, '2025-07-24');
+
+
+-- ************************************ --
+--        Designing SQL Queries         --
+-- ************************************ --
+
+-- SQL Query 7: Create non-trivial query that uses two tables in from clause.
+-- This Query returns the names of all ingredients and their quantities in stock. You can set the RID to whatever recipe you want to check. 
+SELECT
+    i.FName AS ingredient_name,
+    i.Amount AS required_amount,
+    l.quantity AS total_quantity_in_stock
+FROM
+    RecipeIngredients ri,
+    Ingredients i
+JOIN
+    Location l ON i.FName = l.FName
+WHERE
+    ri.R_ID = 101
+    AND ri.Ingredient_ID = i.Ingredient_ID
+GROUP BY
+    i.FName, i.Amount, l.quantity;  --I am still working on making this query work. 
