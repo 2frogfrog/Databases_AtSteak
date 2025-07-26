@@ -40,18 +40,6 @@ ON UPDATE CASCADE
 
 
 /*
- * Create a table that stores the recipies.
- */
-CREATE TABLE IF NOT EXISTS Recipies (
-R_ID INT NOT NULL AUTO_INCREMENT,
-RName VARCHAR(50) UNIQUE NOT NULL CHECK (length(RName) > 0),
-Servings INT NOT NULL CHECK (Servings > 0),
-Calories INT NOT NULL CHECK (Calories >= 0),
-PRIMARY KEY (R_ID)
-)ENGINE = InnoDB;
-
-
-/*
 Creating a table that holds foods to be used in recipes.
 */
 CREATE TABLE IF NOT EXISTS Ingredients (
@@ -63,6 +51,20 @@ CREATE TABLE IF NOT EXISTS Ingredients (
     PRIMARY KEY (Ingredient_ID),
     FOREIGN KEY (FName) REFERENCES Food (FName)
     ON DELETE CASCADE
+)ENGINE = InnoDB;
+
+
+
+
+/*
+ * Create a table that stores the recipies.
+ */
+CREATE TABLE IF NOT EXISTS Recipes (
+R_ID INT NOT NULL AUTO_INCREMENT,
+RName VARCHAR(50) UNIQUE NOT NULL CHECK (length(RName) > 0),
+Servings INT NOT NULL CHECK (Servings > 0),
+Calories INT NOT NULL CHECK (Calories >= 0),
+PRIMARY KEY (R_ID)
 )ENGINE = InnoDB;
 
 
@@ -148,7 +150,7 @@ ON DUPLICATE KEY UPDATE
  * Sample data for the table.
  * Assume Calories is calories per serving. 
  */
-INSERT INTO Recipies (RName, Servings, Calories) VALUES
+INSERT INTO Recipes (RName, Servings, Calories) VALUES
 ('Spaghetti Bolognese', 4, 500),
 ('Chicken Caesar Salad', 2, 400),
 ('Beef Tacos', 3, 300),
@@ -178,19 +180,19 @@ INSERT INTO Ingredients (Amount, Unit, Preparation, FName) VALUES
 -- Recipe Ingrediant sample data.
 INSERT INTO RecipeIngredients (R_ID, Ingredient_ID) VALUES
 -- Recipe 101: Chicken Soup
-(101, 1),	-- Onion
-(101, 4),	-- Chicken Breast
-(101, 6),	-- Vegetable Broth
-(101, 2),	-- Tomato Sauce
+(1, 1),	-- Onion
+(1, 4),	-- Chicken Breast
+(1, 6),	-- Vegetable Broth
+(1, 2),	-- Tomato Sauce
 -- Recipe 102: Omelette
-(102, 3),	-- Garlic
-(102, 8),	-- Egg
-(102, 7),	-- Cheddar Cheese
-(102, 10),	-- Spinach
+(2, 3),	-- Garlic
+(2, 8),	-- Egg
+(2, 7),	-- Cheddar Cheese
+(2, 10),	-- Spinach
 -- Recipe 103: Creamy Pasta
-(103, 9),	-- Milk
-(103, 1),	-- Onion
-(103, 5);	-- Ginger
+(3, 9),	-- Milk
+(3, 1),	-- Onion
+(3, 5);	-- Ginger
 
 
 -- Food location sample data.
