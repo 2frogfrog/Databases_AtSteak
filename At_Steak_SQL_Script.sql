@@ -40,18 +40,6 @@ ON UPDATE CASCADE
 
 
 /*
- * Create a table that stores the recipies.
- */
-CREATE TABLE IF NOT EXISTS Recipes (
-R_ID INT NOT NULL AUTO_INCREMENT,
-RName VARCHAR(50) UNIQUE NOT NULL CHECK (length(RName) > 0),
-Servings INT NOT NULL CHECK (Servings > 0),
-Calories INT NOT NULL CHECK (Calories >= 0),
-PRIMARY KEY (R_ID)
-)ENGINE = InnoDB;
-
-
-/*
 Creating a table that holds foods to be used in recipes.
 */
 CREATE TABLE IF NOT EXISTS Ingredients (
@@ -63,6 +51,20 @@ CREATE TABLE IF NOT EXISTS Ingredients (
     PRIMARY KEY (Ingredient_ID),
     FOREIGN KEY (FName) REFERENCES Food (FName)
     ON DELETE CASCADE
+)ENGINE = InnoDB;
+
+
+
+
+/*
+ * Create a table that stores the recipies.
+ */
+CREATE TABLE IF NOT EXISTS Recipes (
+R_ID INT NOT NULL AUTO_INCREMENT,
+RName VARCHAR(50) UNIQUE NOT NULL CHECK (length(RName) > 0),
+Servings INT NOT NULL CHECK (Servings > 0),
+Calories INT NOT NULL CHECK (Calories >= 0),
+PRIMARY KEY (R_ID)
 )ENGINE = InnoDB;
 
 
@@ -105,7 +107,7 @@ CREATE TABLE IF NOT EXISTS RecipeIngredients (
 /*
 Inserting sample data into each table.
 */
-
+/* Sample data curtousy of chatgpt*/
 -- Food table sample data.
 INSERT INTO Food (category, FName, expr_date, price) VALUES
 ('Fruit',      'Apple',       '2025-08-10', 0.99),
@@ -178,19 +180,19 @@ INSERT INTO Ingredients (Amount, Unit, Preparation, FName) VALUES
 -- Recipe Ingrediant sample data.
 INSERT INTO RecipeIngredients (R_ID, Ingredient_ID) VALUES
 -- Recipe 101: Chicken Soup
-(101, 1),	-- Onion
-(101, 4),	-- Chicken Breast
-(101, 6),	-- Vegetable Broth
-(101, 2),	-- Tomato Sauce
+(1, 1),	-- Onion
+(1, 4),	-- Chicken Breast
+(1, 6),	-- Vegetable Broth
+(1, 2),	-- Tomato Sauce
 -- Recipe 102: Omelette
-(102, 3),	-- Garlic
-(102, 8),	-- Egg
-(102, 7),	-- Cheddar Cheese
-(102, 10),	-- Spinach
+(2, 3),	-- Garlic
+(2, 8),	-- Egg
+(2, 7),	-- Cheddar Cheese
+(2, 10),	-- Spinach
 -- Recipe 103: Creamy Pasta
-(103, 9),	-- Milk
-(103, 1),	-- Onion
-(103, 5);	-- Ginger
+(3, 9),	-- Milk
+(3, 1),	-- Onion
+(3, 5);	-- Ginger
 
 
 -- Food location sample data.
@@ -206,25 +208,3 @@ VALUES
 ('Freezer A', 'Fish', 30, '2025-07-23'),
 ('Fridge A', 'Cheese', 25, '2025-07-21'),
 ('Pantry B', 'Lentils', 45, '2025-07-24');
-
-
--- ************************************ --
---        Designing SQL Queries         --
--- ************************************ --
-
--- SQL Query 7: Create non-trivial query that uses two tables in from clause.
--- This Query returns the names of all ingredients and their quantities in stock. You can set the RID to whatever recipe you want to check. 
-SELECT
-    i.FName AS ingredient_name,
-    i.Amount AS required_amount,
-    l.quantity AS total_quantity_in_stock
-FROM
-    RecipeIngredients ri,
-    Ingredients i
-JOIN
-    Location l ON i.FName = l.FName
-WHERE
-    ri.R_ID = 101
-    AND ri.Ingredient_ID = i.Ingredient_ID
-GROUP BY
-    i.FName, i.Amount, l.quantity;  --I am still working on making this query work. 
