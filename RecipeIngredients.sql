@@ -10,7 +10,7 @@ CREATE TABLE RecipeIngredients (
     -- Unit VARCHAR(10),
     PRIMARY KEY (R_ID, Ingredient_ID),
     -- for connecting later
-    -- FOREIGN KEY (R_ID) REFERENCES Recipes(R_ID),
+    FOREIGN KEY (R_ID) REFERENCES Recipes(R_ID),
     FOREIGN KEY (Ingredient_ID) REFERENCES Ingredients(Ingredient_ID)
 );
 
