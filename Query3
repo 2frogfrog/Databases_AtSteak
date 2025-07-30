@@ -1,6 +1,5 @@
 /* 
 Determines all foods that have been listed as ingredients in a table.
-Currently that is all of them. We might want to add unlisted foods.
 */
 SELECT
 FName, 
