@@ -1,0 +1,74 @@
+<!-- This file shows all ingedients to user-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Recipes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootswatch theme -->
+  <link href="https://bootswatch.com/5/litera/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- nav bar across all files-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">At Steak</a>
+  </div>
+</nav>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="viewIngredients.html">Ingredients</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="viewRecipes.html">Recipes</a>
+  </li>
+</ul>
+
+
+<div class="container mt-4">
+  <h2>Ingredients</h2>
+  <div class="mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search for an ingredient...">
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Quantity</thth>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="ingredientTableBody">
+      <!-- Ingredient records will be inserted here -->
+    </tbody>
+  </table>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+//where we hook up to the database
+
+recipes.forEach(function(recipe) { //this function ideally should fetch a list of recipes from the database but its just theory rn
+    tableBody.append(`
+      <tr>
+        <td>${recipe.RName}</td>
+        <td>
+          <button class="btn btn-sm btn-info view-btn" data-city='${JSON.stringify(recipe)}'>View</button>
+          <button class="btn btn-sm btn-warning edit-btn" data-city='${JSON.stringify(recipe)}'>Edit</button>
+          <button class="btn btn-sm btn-danger delete-btn" data-city="${recipe.RName}">Delete</button>
+        </td>
+      </tr>
+    `);
+  });
+</script>
+
+</body>
+</html>
