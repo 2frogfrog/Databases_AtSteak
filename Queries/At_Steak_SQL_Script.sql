@@ -1,14 +1,15 @@
+
+
+-- ************************************ --
+--               Part A                 --
+-- There are 10 tables for our database --
+-- ************************************ --
+
 /*
-Database creation statment
+Database creation statement
 */
 CREATE DATABASE IF NOT EXISTS AT_STEAK;
 USE AT_STEAK;
-
-/*
-Table creation statements
-Note: FName needs to be 100 characters
-*/
-
 
 /*
 Creating a table that holds information about different foods and their attributes.
@@ -58,7 +59,7 @@ CREATE TABLE IF NOT EXISTS Ingredients (
 
 
 /*
- * Create a table that stores the recipies.
+ * Create a table that stores the recipes.
  */
 CREATE TABLE IF NOT EXISTS Recipes (
 R_ID INT NOT NULL AUTO_INCREMENT,
@@ -70,21 +71,8 @@ PRIMARY KEY (R_ID)
 
 
 /*
-Creating a table that shows what ingrediants are tied to which recipes.
-All of their ID's and Names.
-| Ingredient_ID | FName           |
-| ------------- | --------------- |
-| 1             | Onion           |
-| 2         	| Tomato Sauce    |
-| 3             | Garlic          |
-| 4             | Chicken Breast  |
-| 5             | Ginger          |
-| 6             | Vegetable Broth |
-| 7             | Cheddar Cheese  |
-| 8             | Egg             |
-| 9             | Milk            |
-| 10            | Spinach         |
-*/
+ * Create a table that stores the recipe ingredients
+ */
 CREATE TABLE IF NOT EXISTS RecipeIngredients (
 	-- Recipe ID
     R_ID INT NOT NULL CHECK (R_ID >= 0),
@@ -104,11 +92,10 @@ CREATE TABLE IF NOT EXISTS RecipeIngredients (
 )ENGINE = InnoDB;
 
 
--- -----------------------
-/*
-Inserting sample data into each table.
-*/
-/* Sample data curtousy of chatgpt*/
+-- ************************************ --
+--               Part B                 --
+-- The sample of the data of each table --
+-- ************************************ --
 -- Food table sample data.
 INSERT INTO Food (category, FName, expr_date, price) VALUES
 ('Fruit',      'Apple',       '2025-08-10', 0.99),
@@ -289,3 +276,143 @@ VALUES
 ('Freezer A', 'Fish', 30, '2025-07-23'),
 ('Fridge A', 'Cheese', 25, '2025-07-21'),
 ('Pantry B', 'Lentils', 45, '2025-07-24');
+
+-- ************************************ --
+--               Part C                 --
+--        Designing SQL Queries         --
+-- ************************************ --
+
+-- Query 1: grabs all ingredients from a single recipe. This example is pancakes and syrup
+SELECT
+    r.RName AS Recipe_Name,
+    i.FName AS Ingredient_Name,
+    i.Amount,
+    i.Unit,
+    i.Preparation
+FROM Recipes r
+         JOIN RecipeIngredients ri ON r.R_ID = ri.R_ID
+         JOIN Ingredients i ON ri.Ingredient_ID = i.Ingredient_ID
+         JOIN Food f ON i.FName = f.FName
+WHERE r.RName = 'Cheese Omelette';
+
+-- Query 2: Counts how many ingredients cost more than the average price out of all food items in each recipe.
+-- Lists the recipe name and the number of Expensive Ingredients.
+SELECT
+    r.RName AS Recipe_Name,
+    COUNT(*) AS 'Number of Expensive Ingredients'
+FROM Recipes r
+         JOIN RecipeIngredients ri ON r.R_ID = ri.R_ID
+         JOIN Ingredients i ON ri.Ingredient_ID = i.Ingredient_ID
+WHERE
+    i.FName IN (
+        SELECT FName
+        FROM Food
+        WHERE price > (SELECT AVG(price) FROM Food)
+    )
+GROUP BY r.R_ID, r.RName;
+
+-- Query 3: Determines all foods that have been listed as ingredients in a table.
+SELECT
+    FName,
+    price
+FROM food AS expensive_food
+WHERE EXISTS (
+    SELECT expensive_food.FName
+    FROM ingredients AS listed_food
+    WHERE expensive_food.FName = listed_food.FName)
+
+-- Query 4: Gets the average price of each recipe
+SELECT
+    recipes.RName,
+    avg(food.price) AS AVG_Cost_Per_Recipe
+FROM recipes JOIN recipeingredients ON recipes.R_ID = recipeingredients.R_ID
+             JOIN ingredients ON recipeingredients.Ingredient_ID = ingredients.Ingredient_ID
+             JOIN food ON ingredients.FName = food.FName
+GROUP BY recipes.RName
+
+-- Query 5: Gets ingredients from recipes where the serving size is 1 or 2
+SELECT DISTINCT
+    FName
+FROM ingredients
+WHERE ingredients.Ingredient_ID IN (
+    SELECT ingredients.Ingredient_ID
+    FROM recipeingredients
+             JOIN recipes ON recipeingredients.R_ID = recipes.R_ID
+    WHERE recipes.Servings = 1
+
+    UNION
+
+    SELECT ingredients.Ingredient_ID
+    FROM recipeingredients
+             JOIN recipes ON recipeingredients.R_ID = recipes.R_ID
+    Where recipes.Servings = 2
+);
+
+-- Query 6: grabs recipes and their ingredient names and required amount as well as the quantity you have available
+SELECT
+    recipes.RName AS Recipe_Name,
+    ingredients.FName AS Ingredient_Name,
+    ingredients.Amount AS Required_Amount,
+    ingredients.Unit AS Unit,
+    COALESCE(SUM(location.Quantity), 0) AS Available_Quantity
+FROM Recipes
+         JOIN RecipeIngredients recipeingredients
+              ON recipes.R_ID = recipeingredients.R_ID
+         JOIN Ingredients
+              ON recipeingredients.Ingredient_ID = ingredients.Ingredient_ID
+         JOIN Food
+              ON ingredients.FName = food.FName
+         LEFT JOIN Location
+                   ON food.FName = location.FName
+GROUP BY recipes.RName, ingredients.FName, ingredients.Amount, ingredients.Unit
+ORDER BY recipes.RName, ingredients.FName;
+
+-- Query 7: Gives the recipes you can have all the ingredients for
+SELECT Recipes.RName
+FROM Recipes
+         JOIN RecipeIngredients ON Recipes.R_ID = RecipeIngredients.R_ID
+         JOIN Ingredients ON RecipeIngredients.Ingredient_ID = Ingredients.Ingredient_ID
+         LEFT JOIN Location ON Ingredients.FName = Location.FName
+GROUP BY Recipes.RName
+HAVING COUNT(Ingredients.Ingredient_ID) = COUNT(Location.FName);
+
+-- Query 8: Gives the amounts needed for ingredients and how much you are short
+SELECT
+    Recipes.RName,
+    Ingredients.FName,
+    Ingredients.Amount AS Required_Amount,
+    COALESCE(SUM(Location.Quantity), 0) AS In_Stock,
+    Ingredients.Amount - COALESCE(SUM(Location.Quantity), 0) AS Shortage
+FROM Recipes
+         JOIN RecipeIngredients ON Recipes.R_ID = RecipeIngredients.R_ID
+         JOIN Ingredients ON RecipeIngredients.Ingredient_ID = Ingredients.Ingredient_ID
+         LEFT JOIN Location ON Ingredients.FName = Location.FName
+GROUP BY Recipes.RName, Ingredients.FName, Ingredients.Amount
+HAVING Shortage > 0
+ORDER BY Recipes.RName, Ingredients.FName;
+
+-- Query 9: Grab the recipes for ingredients that are going to expire within three days of the current date.
+SELECT
+    recipes.RName,
+    food.FName,
+    ingredients.Amount,
+    ingredients.Unit,
+    ingredients.Preparation
+FROM recipes
+         JOIN recipeingredients ON recipes.R_ID = recipeingredients.R_ID
+         JOIN ingredients ON recipeingredients.Ingredient_ID = ingredients.Ingredient_ID
+         JOIN food ON ingredients.FName = food.FName
+WHERE food.expr_date BETWEEN CURRENT_DATE AND date_add(CURRENT_DATE, INTERVAL 3 DAY)
+ORDER BY recipes.RName;
+
+-- Query 10: Grabs all food and it's methods of preparation,
+--  if one of the ingredients are located in food storage.
+--  Then filters for food located within the freezer using a pattern match.
+SELECT DISTINCT
+    original.FName,
+    original.Preparation
+FROM ingredients original
+         JOIN ingredients other
+         JOIN location ON original.FName = location.FName
+WHERE original.Ingredient_ID != other.Ingredient_ID
+AND location.Food_Storage LIKE '%Freezer%';
