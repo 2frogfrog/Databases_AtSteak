@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Steak - Your Recipe & Inventory Hub</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-red-700 to-orange-500 text-white p-4 shadow-lg rounded-b-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-4xl font-extrabold tracking-tight">@Steak 🥩</h1>
+            <!-- Navigation Menu (Responsive) -->
+            <nav>
+                <ul class="flex space-x-6 text-lg font-medium">
+                    <li><a href="#ingredients" class="hover:text-red-200 transition-colors duration-300">Ingredients</a></li>
+                    <li><a href="#recipes" class="hover:text-red-200 transition-colors duration-300">Recipes</a></li>
+                    <li><a href="#storage" class="hover:text-red-200 transition-colors duration-300">Storage</a></li>
+                    <li><a href="#food" class="hover:text-red-200 transition-colors duration-300">Food Items</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container mx-auto p-6 flex-grow">
+        <section class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4">Welcome to @Steak!</h2>
+            <p class="text-gray-600 leading-relaxed mb-4">
+                Manage your ingredients, explore delicious recipes, track your food storage locations, and keep an inventory of all your food items.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+                This platform is designed to make your culinary journey organized and enjoyable.
+            </p>
+            <button id="myButton" class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+                Learn More!
+            </button>
+            <p id="message" class="mt-4 text-green-700 font-medium hidden">Explore sections below!</p>
+        </section>
+
+        <!-- Ingredient Section -->
+        <section id="ingredients" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 pb-2">Ingredients 🥕🌶️</h2>
+            <p class="text-gray-600 mb-4">
+                Keep track of all your essential cooking ingredients.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Flour</h3>
+                    <p class="text-sm text-gray-500">Quantity: 2 kg | Type: All-purpose</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Eggs</h3>
+                    <p class="text-sm text-gray-500">Quantity: 1 dozen | Type: Large</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Tomatoes</h3>
+                    <p class="text-sm text-gray-500">Quantity: 5 | Type: Roma</p>
+                </div>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">This section will list all your available ingredients.</p>
+        </section>
+
+        <!-- Recipe Section -->
+        <section id="recipes" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 pb-2">Recipes 🧑‍🍳🍽️</h2>
+            <p class="text-gray-600 mb-4">
+                Discover and manage your favorite recipes.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Classic Beef Stew</h3>
+                    <p class="text-sm text-gray-500">Prep: 20 min | Cook: 2 hrs</p>
+                    <p class="text-sm text-gray-600 mt-2">A hearty and comforting meal for any occasion.</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Spicy Chicken Tacos</h3>
+                    <p class="text-sm text-gray-500">Prep: 15 min | Cook: 25 min</p>
+                    <p class="text-sm text-gray-600 mt-2">Quick and flavorful tacos with a kick!</p>
+                </div>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">Here you can browse, add, and edit recipes.</p>
+        </section>
+
+        <!-- Storage (Location) Section -->
+        <section id="storage" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 pb-2">Storage Locations 🧊🧺</h2>
+            <p class="text-gray-600 mb-4">
+                Organize your food items by where they are stored.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Pantry</h3>
+                    <p class="text-sm text-gray-500">Dry goods, canned items, spices.</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Refrigerator</h3>
+                    <p class="text-sm text-gray-500">Fresh produce, dairy, leftovers.</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Freezer</h3>
+                    <p class="text-sm text-gray-500">Meats, frozen vegetables, ice cream.</p>
+                </div>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">Know exactly where everything is located.</p>
+        </section>
+
+        <!-- Recipe Ingredients Section -->
+        <section id="recipe-ingredients" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 pb-2">Recipe Ingredients 📝</h2>
+            <p class="text-gray-600 mb-4">
+                View the specific ingredients required for each recipe.
+            </p>
+            <div class="p-4 border rounded-md shadow-sm">
+                <h3 class="font-bold text-gray-700">For Classic Beef Stew:</h3>
+                <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                    <li>1 kg Beef Chuck</li>
+                    <li>2 Carrots</li>
+                    <li>3 Potatoes</li>
+                    <li>1 Onion</li>
+                    <li>Beef Broth</li>
+                    <li>Spices</li>
+                </ul>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">This section details the ingredients for selected recipes.</p>
+        </section>
+
+        <!-- Food Section (Individual Food Items) -->
+        <section id="food" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 pb-2">Food Items 🍎🍞</h2>
+            <p class="text-gray-600 mb-4">
+                An inventory of individual food items you possess, beyond raw ingredients.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Apple</h3>
+                    <p class="text-sm text-gray-500">Quantity: 6 | Location: Fridge</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Loaf of Bread</h3>
+                    <p class="text-sm text-gray-500">Quantity: 1 | Location: Pantry</p>
+                </div>
+                <div class="p-4 border rounded-md shadow-sm">
+                    <h3 class="font-bold text-gray-700">Cooked Chicken (leftover)</h3>
+                    <p class="text-sm text-gray-500">Quantity: 1 serving | Location: Fridge</p>
+                </div>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">Track all prepared or individual food items.</p>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white p-4 mt-8 rounded-t-lg">
+        <div class="container mx-auto text-center text-gray-400">
+            &copy; 2025 @Steak. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
