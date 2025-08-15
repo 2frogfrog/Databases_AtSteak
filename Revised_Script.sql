@@ -1,7 +1,7 @@
 
 -- ************************************ --
 --               Part A                 --
--- There are 10 tables for our database --
+-- There are 6 tables for our database  --
 -- ************************************ --
 
 /*
@@ -94,5 +94,5 @@ CREATE TABLE IF NOT EXISTS RecipeIngredients (
 CREATE TABLE IF NOT EXISTS FoodType (
     FName VARCHAR(100) PRIMARY KEY,
     Category VARCHAR(50),
-    Unit VARCHAR(50),
+    Unit VARCHAR(50)
 )ENGINE = InnoDB;
