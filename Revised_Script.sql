@@ -15,7 +15,6 @@ Creating a table that holds information about different foods and their attribut
 */
 CREATE TABLE IF NOT EXISTS Food (
     F_ID INT AUTO_INCREMENT,
-    category VARCHAR(50) NOT NULL CHECK (length(category) > 0),
     FName VARCHAR(50) NOT NULL UNIQUE CHECK (length(FName) > 0),
     expr_date DATE NOT NULL, --  replaced with actual date
     price DECIMAL(6,2) NOT NULL CHECK (price >= 0),
@@ -89,8 +88,11 @@ CREATE TABLE IF NOT EXISTS RecipeIngredients (
     ON UPDATE CASCADE
 )ENGINE = InnoDB;
 
+/*
+* created table to access category of food and what unit fo measurement it takes
+*/
 CREATE TABLE IF NOT EXISTS FoodType (
     FName VARCHAR(100) PRIMARY KEY,
     Category VARCHAR(50),
     Unit VARCHAR(50),
-); ENGINE = InnoDB;
+)ENGINE = InnoDB;
