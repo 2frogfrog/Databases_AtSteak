@@ -181,8 +181,12 @@ INSERT INTO RecipeIngredients (R_ID, Ingredient_ID) VALUES
 (10, 5),  -- Garlic  
 (10, 8),  -- Cheddar Cheese  
 (10, 9),  -- Egg  
-(10, 21); -- Butter  
-
+(10, 21) -- Butter  
+ON DUPLICATE KEY UPDATE
+    Ingredient_ID = VALUES(Ingredient_ID),
+    R_ID = VALUES(R_ID);
+    
+    
 -- Food location sample data.
 INSERT INTO Location (Food_Storage, FName, Quantity, Entry_Date)
 VALUES
@@ -225,14 +229,14 @@ VALUES
 ('Pantry',       'Fish',            2,    '2025-08-12'),
 ('Pantry',       'Cheese',          500,  '2025-08-10');
 
--- Food type samle data.
+-- Food type sample data.
 INSERT INTO FoodType (FName, Category, Unit) VALUES
-('Apple',            'Fruit',      'pcs'),
+('Apple',            'Fruit',      'g'),   -- avg ~150g
 ('Carrot',           'Vegetable',  'g'),
 ('Chicken',          'Meat',       'g'),
-('Croissant',        'Bakery',     'pcs'),
+('Croissant',        'Bakery',     'g'),   -- avg ~60g
 ('Orange Juice',     'Beverage',   'ml'),
-('Granola Bar',      'Snack',      'pcs'),
+('Granola Bar',      'Snack',      'g'),   -- avg ~40g
 ('Ice Cream',        'Frozen',     'ml'),
 ('Ketchup',          'Condiment',  'ml'),
 ('Black Beans',      'Canned',     'g'),
@@ -243,7 +247,7 @@ INSERT INTO FoodType (FName, Category, Unit) VALUES
 ('Ginger',           'Spice',      'g'),
 ('Vegetable Broth',  'Broth',      'ml'),
 ('Cheddar Cheese',   'Dairy',      'g'),
-('Egg',              'Dairy',      'pcs'),
+('Egg',              'Dairy',      'g'),   -- avg ~50g per egg
 ('Milk',             'Dairy',      'ml'),
 ('Spinach',          'Vegetable',  'g'),
 ('Rice',             'Grain',      'g'),
@@ -265,4 +269,8 @@ INSERT INTO FoodType (FName, Category, Unit) VALUES
 ('Celery',           'Vegetable',  'g'),
 ('Pancake Mix',      'Grain',      'g'),
 ('Maple Syrup',      'Condiment',  'ml'),
-('Pasta',            'Grain',      'g');
+('Pasta',            'Grain',      'g')
+ON DUPLICATE KEY UPDATE
+    FName = VALUES(FName),
+    Category = VALUES(Category),
+    Unit = VALUES(Unit);
