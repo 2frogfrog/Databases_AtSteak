@@ -20,6 +20,15 @@ app.get('/api/recipes', async (req, res) => {
     }
 });
 
+//Search query
+app.post('/api/recipes/search', async (req, res) => {
+    const { query } = req.body;
+    const [rows] = await pool.query(
+        'SELECT * FROM recipes WHERE RName LIKE ?', [`%${query}%`]
+    );
+    res.json(rows);
+});
+
 //starts server on local port 3000
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
