@@ -1,3 +1,12 @@
+const pool = require('./DBConnection');
+
+async function getIngredients() {
+    const [rows] = await pool.query('SELECT * FROM ingredients');
+    return rows;
+}
+module.exports = getIngredients;
+
+/*
 recipes.forEach(function(recipe) { //this function ideally should fetch a list of recipes from the database but its just theory rn
     tableBody.append(`
       <tr>
@@ -10,3 +19,4 @@ recipes.forEach(function(recipe) { //this function ideally should fetch a list o
       </tr>
     `);
   });
+ */
