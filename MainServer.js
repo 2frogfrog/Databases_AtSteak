@@ -21,6 +21,7 @@ app.get('/api/recipes', async (req, res) => {
         res.status(500).json({error: "Database error"});
     }
 });
+
 // Search query for recipes
 app.post('/api/recipes/search', async (req, res) => {
     const { query } = req.body;
@@ -48,6 +49,25 @@ app.post('/api/ingredients/search', async (req, res) => {
     );
     res.json(rows);
 });
+
+app.delete('/api/recipes/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [result] = await pool.query(
+            'DELETE FROM recipes WHERE R_ID = ?', [id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Recipe not found" });
+        }
+
+        res.json({ message: "Recipe deleted successfully" });
+    } catch (err) {
+        console.error('Error deleting recipe', err);
+        res.status(500).json({ error: "Database error" });
+    }
+});
+
 
 //Query to view ingredients going bad
 app.get('/api/ingredientsGoingBad', async (req, res) => {
