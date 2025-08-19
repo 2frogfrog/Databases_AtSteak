@@ -5,6 +5,7 @@ const port = process.env.PORT || 3000;
 
 const getRecipes = require("./backend/viewRecipes");
 const getIngredients = require("./backend/viewIngredients");
+const viewIngredientsGoingBad = require("./backend/viewIngredientsGoingBad");
 
 //Grabs directories
 app.use(express.static('frontend'));
@@ -48,6 +49,16 @@ app.post('/api/ingredients/search', async (req, res) => {
     res.json(rows);
 });
 
+//Query to view ingredients going bad
+app.get('/api/ingredientsGoingBad', async (req, res) => {
+    try {
+        const offIngredients = await viewIngredientsGoingBad();
+        res.json(offIngredients);
+    }catch(err) {
+        console.error('Error fetching ingredients',err);
+        res.status(500).json({error: "Database error"});
+    }
+});
 //starts server on local port 3000
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

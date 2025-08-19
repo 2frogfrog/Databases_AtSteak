@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const thead = document.getElementById('RecipeTableHeader');
     const tbody = document.getElementById('RecipeTableBody');
     const input = document.getElementById('searchInput'); // Make sure this exists in your HTML
 
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fetch(endpoint, options)
             .then(res => res.json())
-            .then(data => renderTable(data, tbody))
+            .then(data => renderTable(data, tbody, thead))
             .catch(err => {
                 console.error('Error loading data:', err);
                 tbody.innerHTML = `<tr><td colspan="100%">Error loading data</td></tr>`;
@@ -39,18 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Modular table renderer
-    function renderTable(data, tbody) {
+    function renderTable(data, tbody, thead) {
         if (!Array.isArray(data) || data.length === 0) {
+            thead.innerHTML = '';
             tbody.innerHTML = `<tr><td colspan="100%">No data found</td></tr>`;
             return;
         }
 
-        tbody.innerHTML = ''; // Clear existing rows
+
+        // Extract and render column headers from the first row's keys
+        const columnNames = Object.keys(data[0]);
+        //thead.innerHTML = '';
+        thead.innerHTML = '<tr>' + columnNames.map(col => `<th>${col}</th>`).join('') + '</tr>';
+
+        tbody.innerHTML = ''; // Clear existing rows in the body
         data.forEach(row => {
             const tr = document.createElement('tr');
-            tr.innerHTML = Object.values(row)
-                .map(value => `<td>${value}</td>`)
-                .join('');
+            tr.innerHTML = columnNames.map(
+                col => `<td>${row[col]}</td>`).join('');
             tbody.appendChild(tr);
         });
     }
