@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const getRecipes = require("./backend/viewRecipes");
+const getIngredients = require("./backend/viewIngredients");
 
 //Grabs directories
 app.use(express.static('frontend'));
@@ -20,13 +21,24 @@ app.get('/api/recipes', async (req, res) => {
     }
 });
 
-//Search query
+// Search query
 app.post('/api/recipes/search', async (req, res) => {
     const { query } = req.body;
     const [rows] = await pool.query(
         'SELECT * FROM recipes WHERE RName LIKE ?', [`%${query}%`]
     );
     res.json(rows);
+});
+
+//establish a route to get the ingredients
+app.get('/api/ingredients', async (req, res) => {
+    try {
+        const ingredients = await getIngredients();
+        res.json(ingredients);
+    }catch(err) {
+        console.error('Error fetching ingredients',err);
+        res.status(500).json({error: "Database error"});
+    }
 });
 
 //starts server on local port 3000
