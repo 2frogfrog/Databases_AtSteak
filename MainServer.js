@@ -20,8 +20,7 @@ app.get('/api/recipes', async (req, res) => {
         res.status(500).json({error: "Database error"});
     }
 });
-
-// Search query
+// Search query for recipes
 app.post('/api/recipes/search', async (req, res) => {
     const { query } = req.body;
     const [rows] = await pool.query(
@@ -39,6 +38,14 @@ app.get('/api/ingredients', async (req, res) => {
         console.error('Error fetching ingredients',err);
         res.status(500).json({error: "Database error"});
     }
+});
+// Search query for ingredients
+app.post('/api/ingredients/search', async (req, res) => {
+    const { query } = req.body;
+    const [rows] = await pool.query(
+        'SELECT * FROM ingredients WHERE FName LIKE ?', [`%${query}%`]
+    );
+    res.json(rows);
 });
 
 //starts server on local port 3000
