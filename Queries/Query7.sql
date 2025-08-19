@@ -1,4 +1,5 @@
---Gives the recipes you can have all the ingredients for
+-- Gives the recipes you can have all the ingredients for
+-- Note: All ingredients for each recipe are in the data set at this time
 SELECT Recipes.RName
 FROM Recipes
          JOIN RecipeIngredients ON Recipes.R_ID = RecipeIngredients.R_ID
