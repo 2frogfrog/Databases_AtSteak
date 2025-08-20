@@ -34,6 +34,14 @@
   <div class="mb-3">
     <input type="text" id="searchInput" class="form-control" placeholder="Search for a recipe...">
   </div>
+  <div class="dropdown">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      Filter Options
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+      <li><button class="dropdown-item" id="enableFilterBtn">Small Serving Recipes</button></li>
+    </ul>
+  </div>
 
   <table class="table table-striped">
     <thead id="RecipeTableHeader">

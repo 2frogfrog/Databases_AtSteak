@@ -6,6 +6,8 @@ const port = process.env.PORT || 3000;
 const getRecipes = require("./backend/viewRecipes");
 const getIngredients = require("./backend/viewIngredients");
 const viewIngredientsGoingBad = require("./backend/viewIngredientsGoingBad");
+//const viewRecipeAveragePrice = require("./backend/viewRecipesAvgPrice");
+const viewSmallServingRecipes = require("./backend/viewSmallServingRecipes");
 
 //Grabs directories
 app.use(express.static('frontend'));
@@ -124,7 +126,6 @@ app.get('/api/recipes/viewRecipesIngredients/:id', async (req, res) => {
     }
 });
 
-
 //Query to view ingredients going bad
 app.get('/api/ingredientsGoingBad', async (req, res) => {
     try {
@@ -132,6 +133,38 @@ app.get('/api/ingredientsGoingBad', async (req, res) => {
         res.json(offIngredients);
     }catch(err) {
         console.error('Error fetching ingredients',err);
+        res.status(500).json({error: "Database error"});
+    }
+});
+//starts server on local port 3000
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
+
+/*
+//Query to view average price of each recipe
+app.get('/api/recipeAveragePrice', async (req, res) => {
+    try {
+        const recipeAvgPrice = await viewRecipeAveragePrice();
+        res.json(recipeAvgPrice);
+    } catch(err) {
+        console.error('Error fetching recipes',err);
+        res.status(500).json({error: "Database error"});
+    }
+});
+//starts server on local port 3000
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
+*/
+
+//Query to view average price of each recipe
+app.get('/api/recipeSmallServing', async (req, res) => {
+    try {
+        const recipeSmallServing = await viewSmallServingRecipes();
+        res.json(recipeSmallServing);
+    } catch(err) {
+        console.error('Error fetching recipes',err);
         res.status(500).json({error: "Database error"});
     }
 });

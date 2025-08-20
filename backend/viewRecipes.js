@@ -1,3 +1,4 @@
+// trivial query showing all recipes
 const pool = require('./DBConnection');
 
 async function getRecipes() {
@@ -5,3 +6,4 @@ async function getRecipes() {
     return rows;
 }
 module.exports = getRecipes;
+

@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let filterEnabled = false;
 
     const thead = document.getElementById('RecipeTableHeader');
     const tbody = document.getElementById('RecipeTableBody');
     const input = document.getElementById('searchInput'); // Make sure this exists in your HTML
+    const filterBtn = document.getElementById('enableFilterBtn');
 
     // Initial load
     fetchAndRender('/api/recipes');
@@ -13,13 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
             const query = input.value.trim();
-            if (query === '') {
+            if (query === '' && filterEnabled) {
+                fetchAndRender('/api/recipeSmallServing');
+            } else if (query === '') {
                 fetchAndRender('/api/recipes'); // fallback to default
             } else {
                 fetchAndRender('/api/recipes/search', { query });
             }
         }, 300); // debounce delay
     });
+
+    filterBtn.addEventListener('click', () => {
+        filterEnabled = !filterEnabled;
+        filterBtn.textContent = filterEnabled ? 'Small Serving Recipes (active)' : 'Small Serving Recipes (inactive)';
+        fetchAndRender('/api/recipeSmallServing')
+    })
 
     // Modular fetch + render
     function fetchAndRender(endpoint, payload = null) {
