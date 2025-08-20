@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="js/viewSingleRecipe.js" defer></script>
   <meta charset="UTF-8">
   <title>View Recipes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,8 +30,15 @@
 
 <div class="container mt-4">
   <h2>Recipe Details</h2>
-  <div id="cityDetails">
-    <!-- Recipe Details -->
+  <div id="RecipeDetails">
+    <table class="table table-striped">
+      <thead id="RecipeTableHeader">
+      <!-- Column names go here dynamically -->
+      </thead>
+      <tbody id="RecipeTableBody">
+      <!-- Recipe records will be inserted here -->
+      </tbody>
+    </table>
   </div>
   <button id="backButton" class="btn btn-primary">Back to All Recipes</button>
 </div>

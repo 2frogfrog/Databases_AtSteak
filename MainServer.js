@@ -68,6 +68,62 @@ app.delete('/api/recipes/:id', async (req, res) => {
     }
 });
 
+app.get('/api/recipes/viewOne/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const [result] = await pool.query('SELECT \n' +
+            'ingredients.FName,\n' +
+            'location.Food_Storage,\n' +
+            'location.quantity,\n' +
+            'foodtype.Unit,\n' +
+            'DATE_FORMAT(ENTRY_Date, \'%Y-%m-%d\') AS Entry_Date \n' +
+            'FROM location\n' +
+            'JOIN ingredients using(FName)\n' +
+            'JOIN recipeingredients using(Ingredient_ID)\n' +
+            'JOIN recipes using(R_ID)\n' +
+            'JOIN foodtype using(FName)\n' +
+            'WHERE R_ID = ?', [id]);
+        if (result.length === 0) {
+            return res.status(404).send('Item not found');
+        }
+
+        res.json(result); // send JSON instead of rendering a template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/recipes/viewRecipesIngredients/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const [result] = await pool.query('SELECT\n' +
+            '    Recipes.RName,\n' +
+            '    Ingredients.FName,\n' +
+            '    Ingredients.Amount AS Required_Amount,\n' +
+            '    foodtype.Unit,\n' +
+            '    COALESCE(SUM(Location.Quantity), 0) AS In_Stock,\n' +
+            '    Ingredients.Amount - COALESCE(SUM(Location.Quantity), 0) AS Shortage\n' +
+            'FROM Recipes\n' +
+            '         JOIN RecipeIngredients ON Recipes.R_ID = RecipeIngredients.R_ID\n' +
+            '         JOIN Ingredients ON RecipeIngredients.Ingredient_ID = Ingredients.Ingredient_ID\n' +
+            '         LEFT JOIN Location ON Ingredients.FName = Location.FName\n' +
+            '         JOIN foodtype ON Location.FName = foodtype.FName\n' +
+            'WHERE recipes.R_ID = ?' +
+            'GROUP BY Recipes.RName, Ingredients.FName, Ingredients.Amount\n' +
+            'HAVING Shortage > 0\n' +
+            'ORDER BY Recipes.RName, Ingredients.FName;', [id]);
+        if (result.length === 0) {
+            return res.status(404).send('Item not found');
+        }
+
+        res.json(result); // send JSON instead of rendering a template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
 
 //Query to view ingredients going bad
 app.get('/api/ingredientsGoingBad', async (req, res) => {
