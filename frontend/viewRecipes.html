@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="js/viewAndSearchRecipesFE.js" defer></script>
   <meta charset="UTF-8">
   <title>View Recipes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,10 +21,10 @@
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" href="viewIngredients.html">Ingredients</a>
+    <a class="nav-link" href="http://localhost:3000/viewIngredients.html">Ingredients</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="viewRecipes.html">Recipes</a>
+    <a class="nav-link active" href="http://localhost:3000/viewRecipes.html">Recipes</a>
   </li>
 </ul>
  
@@ -33,12 +34,18 @@
   <div class="mb-3">
     <input type="text" id="searchInput" class="form-control" placeholder="Search for a recipe...">
   </div>
+  <div class="dropdown">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      Filter Options
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+      <li><button class="dropdown-item" id="enableFilterBtn">Small Serving Recipes</button></li>
+    </ul>
+  </div>
+
   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Recipe Title</th>
-        <th>Actions</th>
-      </tr>
+    <thead id="RecipeTableHeader">
+      <!-- Column names go here dynamically -->
     </thead>
     <tbody id="RecipeTableBody">
       <!-- Recipe records will be inserted here -->
@@ -51,7 +58,8 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="../backend/viewRecipes.js" defer></script>
+<script>
+</script>
 
 </body>
 </html>
